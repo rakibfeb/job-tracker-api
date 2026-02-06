@@ -4,13 +4,14 @@ const  {
     createApplication,
     getApplications,
     updateApplicaton,
-    getApplication
+    getApplication,
+    deleteApplication
 } = require('../controllers/applications.controller');
 
 router.post("/",createApplication);
 router.get("/",getApplications);
 router.put("/:id", updateApplicaton);
 router.get("/:id",getApplication);
-// router.delete("/:id",deleteApplication);
+router.delete("/:id",deleteApplication);
 
 module.exports = router;

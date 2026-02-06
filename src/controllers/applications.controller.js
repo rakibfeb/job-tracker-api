@@ -53,3 +53,15 @@ exports.getApplication=async (req,res)=>{
         res.status(500).json({message:"failed to get the Application"});
     }
 }
+
+exports.deleteApplication = async (req,res)=>{
+    try{
+        let {id} = req.params;
+        let application = await Application.findByIdAndDelete(id);
+        if(!application) return res.status(404).json({message:"apllication not found"});
+
+        res.status(201).json({message:"Application deleted successfully",application});
+    }catch(err){
+        res.status(500).json({message:"failed to delete application"})
+    }
+}
