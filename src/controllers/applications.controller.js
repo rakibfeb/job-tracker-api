@@ -3,65 +3,83 @@ const Application = require("../models/Application");
 exports.createApplication = async (req, res) => {
     try {
         const application = await Application.create(req.body);
-        res.status(201).json({ message: "Application created successfully!" ,application});
+        res.status(201).json({ message: "Application created successfully!", application });
     }
     catch (err) {
-        console.log(err);
         res.status(500).json({ message: "Failed to create a new application" });
     }
 }
 
 exports.getApplications = async (req, res) => {
     try {
-        const applications = await Application.find();
-        console.log(applications);
-        res.status(201).json({ 
-            success:true,
-            count:applications.length,
-            data: applications })
+        let { status, company, search } = req.query;
+
+        let filter = {};
+
+        if (status) {
+            filter.status = status;
+        }
+        if (company) {
+            filter.company = { $regex: company, $options: 'i' }
+        };
+
+        if (search) {
+            filter.$or = [
+                { company: { $regex: search, $options: 'i' } },
+                { role: { $regex: search, $options: 'i' } },
+                { notes: { $regex: search, $options: 'i' } },
+            ];
+        }
+
+        const applications = await Application.find(filter).sort({ createdAt: -1 }).select('-__v');
+        res.status(201).json({
+            success: true,
+            count: applications.length,
+            data: applications
+        })
     }
     catch (err) {
         res.status(500).json({ message: "failed to get applications" });
     }
 }
 
-exports.updateApplicaton = async (req,res)=>{
-    try{
-        let {id} = req.params;
+exports.updateApplicaton = async (req, res) => {
+    try {
+        let { id } = req.params;
         const application = await Application.findByIdAndUpdate(
-            id, req.body,{new:true}
+            id, req.body, { new: true }
         );
 
-        if(!application) return res.status(404).json({message:"Application not found"});
+        if (!application) return res.status(404).json({ message: "Application not found" });
 
-        res.status(200).json({message:"UpApplication updated successfully",application});
+        res.status(200).json({ message: "UpApplication updated successfully", application });
     }
-    catch(err){
-        res.status(500).json({message:"Failed to update application"});
+    catch (err) {
+        res.status(500).json({ message: "Failed to update application" });
     }
 }
 
-exports.getApplication=async (req,res)=>{
-    try{
-        let {id} = req.params;
+exports.getApplication = async (req, res) => {
+    try {
+        let { id } = req.params;
         let application = await Application.findById(id);
-        if(!application) return res.status(404).json({message:"Application not found"});
+        if (!application) return res.status(404).json({ message: "Application not found" });
 
-        res.status(200).json({message:"get application Successfully",application});
+        res.status(200).json({ message: "get application Successfully", application });
 
-    }catch(err){
-        res.status(500).json({message:"failed to get the Application"});
+    } catch (err) {
+        res.status(500).json({ message: "failed to get the Application" });
     }
 }
 
-exports.deleteApplication = async (req,res)=>{
-    try{
-        let {id} = req.params;
+exports.deleteApplication = async (req, res) => {
+    try {
+        let { id } = req.params;
         let application = await Application.findByIdAndDelete(id);
-        if(!application) return res.status(404).json({message:"apllication not found"});
+        if (!application) return res.status(404).json({ message: "apllication not found" });
 
-        res.status(201).json({message:"Application deleted successfully",application});
-    }catch(err){
-        res.status(500).json({message:"failed to delete application"})
+        res.status(201).json({ message: "Application deleted successfully", application });
+    } catch (err) {
+        res.status(500).json({ message: "failed to delete application" })
     }
 }
