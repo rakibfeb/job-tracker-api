@@ -24,3 +24,19 @@ exports.getApplications = async (req, res) => {
         res.status(500).json({ message: "failed to get applications" });
     }
 }
+
+exports.updateApplicaton = async (req,res)=>{
+    try{
+        let {id} = req.params;
+        const application = await Application.findByIdAndUpdate(
+            id, req.body,{new:true}
+        );
+
+        if(!application) return res.status(404).json({message:"Application not found"});
+
+        res.status(200).json({message:"UpApplication updated successfully"},application);
+    }
+    catch(err){
+        res.status(500).json({message:"Failed to update application"});
+    }
+}
