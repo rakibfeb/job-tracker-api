@@ -3,7 +3,7 @@ const Application = require("../models/Application");
 exports.createApplication = async (req, res) => {
     try {
         const application = await Application.create(req.body);
-        res.status(201).json({ message: "Application created successfully!" });
+        res.status(201).json({ message: "Application created successfully!" ,application});
     }
     catch (err) {
         console.log(err);
@@ -34,9 +34,22 @@ exports.updateApplicaton = async (req,res)=>{
 
         if(!application) return res.status(404).json({message:"Application not found"});
 
-        res.status(200).json({message:"UpApplication updated successfully"},application);
+        res.status(200).json({message:"UpApplication updated successfully",application});
     }
     catch(err){
         res.status(500).json({message:"Failed to update application"});
+    }
+}
+
+exports.getApplication=async (req,res)=>{
+    try{
+        let {id} = req.params;
+        let application = await Application.findById(id);
+        if(!application) return res.status(404).json({message:"Application not found"});
+
+        res.status(200).json({message:"get application Successfully",application});
+
+    }catch(err){
+        res.status(500).json({message:"failed to get the Application"});
     }
 }
