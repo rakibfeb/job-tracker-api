@@ -81,10 +81,10 @@ exports.getApplication = async (req, res) => {
 exports.deleteApplication = async (req, res) => {
     try {
         let { id } = req.params;
-        let application = await Application.findByIdAndDelete(id);
+        let application = await Application.findOneAndDelete({_id: id, user: req.user});
         if (!application) return res.status(404).json({ message: "apllication not found" });
 
-        res.status(201).json({ message: "Application deleted successfully", application });
+        res.status(200).json({ message: "Application deleted successfully", application });
     } catch (err) {
         res.status(500).json({ message: "failed to delete application" })
     }
