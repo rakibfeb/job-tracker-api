@@ -15,6 +15,6 @@ app.get("/",(req,res)=>{
 })
 
 app.use("/api/applications", applicationRoutes);
-app.post("/register",register);
+app.use("/api/auth",require('./routes/auth.routes'));
 
 module.exports = app;
