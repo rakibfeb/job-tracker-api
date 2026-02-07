@@ -2,8 +2,11 @@ const Application = require("../models/Application");
 
 exports.createApplication = async (req, res) => {
     try {
-        const application = await Application.create(req.body);
-        res.status(201).json({ message: "Application created successfully!", application });
+        const application = await Application.create({
+            ...req.body,
+             user: req.user
+            });
+        res.status(200).json({ message: "Application created successfully!", application });
     }
     catch (err) {
         res.status(500).json({ message: "Failed to create a new application" });
@@ -31,8 +34,8 @@ exports.getApplications = async (req, res) => {
             ];
         }
 
-        const applications = await Application.find(filter).sort({ createdAt: -1 }).select('-__v');
-        res.status(201).json({
+        const applications = await Application.find({user: req.user, ...filter}).sort({ createdAt: -1 }).select('-__v');
+        res.status(200).json({
             success: true,
             count: applications.length,
             data: applications
