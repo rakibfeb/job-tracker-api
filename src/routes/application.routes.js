@@ -8,6 +8,8 @@ const  {
     deleteApplication
 } = require('../controllers/applications.controller');
 
+router.use(require('../middleware/auth.middleware')); // middleware
+
 router.post("/",createApplication);
 router.get("/",getApplications);
 router.put("/:id", updateApplicaton);
