@@ -50,7 +50,10 @@ exports.updateApplicaton = async (req, res) => {
     try {
         let { id } = req.params;
         const application = await Application.findByIdAndUpdate(
-            id, req.body, { new: true }
+            {_id: id,
+            user: req.user},
+            req.body, 
+            { new: true }
         );
 
         if (!application) return res.status(404).json({ message: "Application not found" });
