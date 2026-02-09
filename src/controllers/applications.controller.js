@@ -4,7 +4,8 @@ exports.createApplication = async (req, res) => {
     try {
         const application = await Application.create({
             ...req.body,
-             user: req.user
+             user: req.user,
+             statusHistory: [{status:req.body.status || "Applied"}]
             });
         res.status(200).json({ message: "Application created successfully!", application });
     }
@@ -49,6 +50,12 @@ exports.getApplications = async (req, res) => {
 exports.updateApplicaton = async (req, res) => {
     try {
         let { id } = req.params;
+        const existingApplication = await Application.findById(id);
+        if (!existingApplication) return res.status(404).json({ message: "Application not found" });
+        if(req.body.status !== existingApplication.status){
+            existingApplication.statusHistory.push({status: req.body.status});
+            await existingApplication.save();
+        }
         const application = await Application.findByIdAndUpdate(
             {_id: id,
             user: req.user},
@@ -64,6 +71,7 @@ exports.updateApplicaton = async (req, res) => {
         res.status(500).json({ message: "Failed to update application" });
     }
 }
+
 
 exports.getApplication = async (req, res) => {
     try {

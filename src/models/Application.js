@@ -4,25 +4,39 @@ const mongoose = require('mongoose');
 
 const applicationSchema = new mongoose.Schema(
     {
-       user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    }, 
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
+        },
         company: {
             type: String,
             required: true
         },
-        role:{
+        role: {
             type: String,
             required: true
         },
 
-        status:{
+        status: {
             type: String,
-            enum:["Applied","Interview","Offer","Rejected"],
-            default:"Applied"
+            enum: ["Applied", "Interview", "Offer", "Rejected"],
+            default: "Applied"
         },
+        statusHistory: [
+            {
+                status: {
+                    type: String,
+                    enum: ["Applied", "Interview", "Offer", "Rejected"],
+                    default: "Applied"
+                },
+
+                changedAt: {
+                    type: Date,
+                    default: Date.now
+                }
+            }
+        ],
         appliedDate: {
             type: Date,
             default: Date.now()
@@ -31,12 +45,12 @@ const applicationSchema = new mongoose.Schema(
             type: Date
         },
         notes: {
-            type:String
+            type: String
         }
     },
     {
-        timestamps:true
+        timestamps: true
     }
 );
 
-module.exports = mongoose.model("Application",applicationSchema);
+module.exports = mongoose.model("Application", applicationSchema);

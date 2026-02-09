@@ -5,7 +5,7 @@ const  {
     getApplications,
     updateApplicaton,
     getApplication,
-    deleteApplication
+    deleteApplication,
 } = require('../controllers/applications.controller');
 
 router.use(require('../middleware/auth.middleware')); // middleware
@@ -15,5 +15,4 @@ router.get("/",getApplications);
 router.put("/:id", updateApplicaton);
 router.get("/:id",getApplication);
 router.delete("/:id",deleteApplication);
-
 module.exports = router;
