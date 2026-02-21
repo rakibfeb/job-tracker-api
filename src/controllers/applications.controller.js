@@ -32,6 +32,8 @@ exports.getApplications = async (req, res) => {
                 { company: { $regex: search, $options: 'i' } },
                 { role: { $regex: search, $options: 'i' } },
                 { notes: { $regex: search, $options: 'i' } },
+                { location: { $regex: search, $options: 'i' } },
+                { salary: { $regex: search, $options: 'i' } },
             ];
         }
 
