@@ -18,7 +18,7 @@ try{
         name,email,password:hashed
     });
 
-    res.status(201).json({message:'User registered successfully!',user});
+    return res.status(201).json({message:'User registered successfully!',user});
 
 }catch(err){
     return res.status(501).json({message:"failed to register try again"});
