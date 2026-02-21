@@ -17,7 +17,16 @@ const applicationSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        location:{
+            type: String
+        },
+          salary: {
+            type: String
 
+        },
+        jobUrl:{
+            type: String
+        },
         status: {
             type: String,
             enum: ["Applied", "Interview", "Offer", "Rejected"],
