@@ -29,14 +29,14 @@ const applicationSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["Applied", "Interview", "Offer", "Rejected"],
+            enum: ["Applied", "Phone Screen", "Interview Scheduled", "Interviewed","Technical Test","Offer Received","Offer Accepted","Rejected","Withdrawn"],
             default: "Applied"
         },
         statusHistory: [
             {
                 status: {
                     type: String,
-                    enum: ["Applied", "Interview", "Offer", "Rejected"],
+                    enum: ["Applied", "Phone Screen", "Interview Scheduled", "Interviewed","Technical Test","Offer Received","Offer Accepted","Rejected","Withdrawn"],
                     default: "Applied"
                 },
 
